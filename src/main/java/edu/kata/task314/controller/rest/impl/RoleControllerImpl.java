@@ -16,6 +16,8 @@ public class RoleControllerImpl implements RoleController {
 
     private final RoleService roleService;
 
+    //------------------------------------------------------------------------------------------------------------------
+
     @Override
     public RoleDto findOne(Long id) {
         return roleService.findOne(id);
