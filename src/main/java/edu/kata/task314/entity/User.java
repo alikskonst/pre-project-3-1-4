@@ -20,10 +20,6 @@ public class User extends NameEntity implements UserDetails {
     private String lastName;
 
     @Getter
-    @Column(name = "middle_name")
-    private String middleName;
-
-    @Getter
     private String login;
 
     @Column(name = "password_hash")

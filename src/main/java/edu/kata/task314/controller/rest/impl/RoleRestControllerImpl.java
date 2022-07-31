@@ -1,18 +1,18 @@
 package edu.kata.task314.controller.rest.impl;
 
-import edu.kata.task314.controller.rest.RoleController;
+import edu.kata.task314.controller.rest.RoleRestController;
 import edu.kata.task314.dto.RoleDto;
 import edu.kata.task314.service.RoleService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/roles")
-public class RoleControllerImpl implements RoleController {
+public class RoleRestControllerImpl implements RoleRestController {
 
     private final RoleService roleService;
 
@@ -24,7 +24,7 @@ public class RoleControllerImpl implements RoleController {
     }
 
     @Override
-    public List<RoleDto> findAll() {
+    public Set<RoleDto> findAll() {
         return roleService.findAll();
     }
 }

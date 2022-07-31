@@ -1,6 +1,7 @@
 package edu.kata.task314.entity;
 
 import edu.kata.task314.entity.parent.NameEntity;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "role", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class Role extends NameEntity implements GrantedAuthority {
@@ -28,26 +30,5 @@ public class Role extends NameEntity implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return getName();
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-
-    // на случай сбора в Set
-    // see: edu.kata.task312.User
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Role role = (Role) obj;
-        return getId().equals(role.getId()) && getName().equals(role.getName());
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 11;
-        hash = 31 * hash + getId().intValue();
-        hash = 31 * hash + (getName() == null ? 0 : getName().hashCode());
-        return hash;
     }
 }

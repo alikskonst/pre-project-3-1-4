@@ -1,6 +1,5 @@
 package edu.kata.task314.handler;
 
-import edu.kata.task314.exception.CommonException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -104,22 +103,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         );
         // apiError.setDebugMessage(methodArgumentTypeMismatchException.getMessage());
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
-    }
-
-    /**
-     * example:
-     * {
-     * "status": 404,
-     * "error": "NOT_FOUND",
-     * "message": "Entity not found exception"
-     * }
-     */
-    // fixme: херня какая-то
-    @ExceptionHandler(CommonException.class)
-    protected ResponseEntity<Object> handleCommonException(CommonException exception,
-                                                           WebRequest webRequest) {
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, exception.getMessage(), exception);
-        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
     /**

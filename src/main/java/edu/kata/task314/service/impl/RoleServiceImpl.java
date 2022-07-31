@@ -12,6 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -33,10 +34,10 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleDto> findAll() {
+    public Set<RoleDto> findAll() {
         List<Role> roleList = roleRepository.findAll();
         return roleList.isEmpty() ?
-                Collections.emptyList() :
-                roleList.stream().map(roleConverter::convert).collect(Collectors.toList());
+                Collections.emptySet() :
+                roleList.stream().map(roleConverter::convert).collect(Collectors.toSet());
     }
 }

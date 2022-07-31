@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public interface UserController {
+public interface UserRestController {
 
     @GetMapping
     UserDto findOne(@RequestParam Long id);
@@ -14,7 +14,7 @@ public interface UserController {
     @GetMapping("/all")
     List<UserDto> findAll();
 
-    @PostMapping
+    @PostMapping("/save")
     UserDto save(@RequestBody UserDto userDto);
 
     @PostMapping("/register")

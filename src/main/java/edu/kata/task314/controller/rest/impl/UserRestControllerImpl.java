@@ -1,6 +1,6 @@
 package edu.kata.task314.controller.rest.impl;
 
-import edu.kata.task314.controller.rest.UserController;
+import edu.kata.task314.controller.rest.UserRestController;
 import edu.kata.task314.dto.UserDto;
 import edu.kata.task314.dto.UserRegisterDto;
 import edu.kata.task314.service.UserService;
@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/users")
-public class UserControllerImpl implements UserController {
+public class UserRestControllerImpl implements UserRestController {
 
     private final UserService userService;
 
