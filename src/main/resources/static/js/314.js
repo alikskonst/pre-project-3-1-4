@@ -36,7 +36,7 @@ function addUser() {
 
     };
     $.ajax({
-        url: 'http://localhost:8080/api/admin/new',
+        url: 'http://localhost:8080/api/admin/save',
         type: 'post',
         data: JSON.stringify(user),
         headers: {
@@ -114,7 +114,7 @@ function sendEditRequest(user) {
         };
         $.ajax({
             url: `http://localhost:8080/api/admin/${userId}`,
-            type: 'patch',
+            type: 'post',
             data: JSON.stringify(user),
             headers: {
                 'x-auth-token': localStorage.accessToken,
@@ -175,7 +175,7 @@ function fillInUsersTable(isAdmin) {
 
 function deleteUser(userId) {
     $.ajax({
-        url: 'http://localhost:8080/api/admin/' + userId,
+        url: 'http://localhost:8080/api/admin/remove?id=' + userId,
         type: 'delete',
         headers: {
             'x-auth-token': localStorage.accessToken
