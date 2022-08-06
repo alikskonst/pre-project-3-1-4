@@ -24,22 +24,6 @@ public class AdminWebControllerImpl implements AdminWebController {
         modelMap.addAttribute("currentUser", userService.findOne(user.getLogin()));
         modelMap.addAttribute("user", new User());
         modelMap.addAttribute("userList", userService.findAll());
-        return "user_panel";
-    }
-
-    @Override
-    public String pageCreate(ModelMap modelMap) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        modelMap.addAttribute("currentUser", userService.findOne(user.getLogin()));
-        modelMap.addAttribute("user", new User());
-        return "user_manage";
-    }
-
-    @Override
-    public String pageUpdate(ModelMap modelMap, Long id) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        modelMap.addAttribute("currentUser", userService.findOne(user.getLogin()));
-        modelMap.addAttribute("user", userService.findOne(id));
-        return "user_manage";
+        return "control_panel";
     }
 }
