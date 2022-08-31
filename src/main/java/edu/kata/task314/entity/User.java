@@ -82,20 +82,4 @@ public class User extends NameEntity implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (this == obj) return true;
-//        if (obj == null || getClass() != obj.getClass()) return false;
-//        User user = (User) obj;
-//        return Objects.equals(getId(), user.getId())
-//                && login.equals(user.login)
-//                && getName().equals(user.getName())
-//                && lastName.equals(user.lastName)
-//                && middleName.equals(user.middleName);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(getId(), login, getName(), lastName, middleName);
-//    }
 }
