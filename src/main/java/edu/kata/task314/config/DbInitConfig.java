@@ -25,15 +25,12 @@ public class DbInitConfig {
     @PostConstruct
     private void createUsers() {
 
-        Role roleAdmin = new Role();
-        roleAdmin.setName("ADMIN");
-
-        Role roleUser = new Role();
-        roleUser.setName("USER");
-
+        Role roleAdmin = getRole("admin");
         if (!roleRepository.existsByName(roleAdmin.getName())) {
             roleRepository.save(roleAdmin);
         }
+
+        Role roleUser = getRole("user");
         if (!roleRepository.existsByName(roleUser.getName())) {
             roleRepository.save(roleUser);
         }
@@ -63,6 +60,12 @@ public class DbInitConfig {
                 userRepository.save(userUser);
             }
         }
+    }
+
+    private Role getRole(String name) {
+        Role role = new Role();
+        role.setName(name.toUpperCase());
+        return role;
     }
 
     private User getUser(String name, String password) {
