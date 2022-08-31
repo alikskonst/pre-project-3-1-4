@@ -25,6 +25,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public boolean isExistByName(String name) {
+        return roleRepository.existsByName(name);
+    }
+
+    @Override
     public List<Role> findAll() {
         return roleRepository.findAll();
     }
@@ -36,7 +41,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role save(Role entity) {
-        throw new RuntimeException("Not implemented");
+        return roleRepository.save(entity);
     }
 
     @Override

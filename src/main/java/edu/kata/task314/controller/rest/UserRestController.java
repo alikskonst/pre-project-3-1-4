@@ -24,7 +24,7 @@ public class UserRestController {
 
     //------------------------------------------------------------------------------------------------------------------
 
-    @PreAuthorize("hasAnyRole({'ROLE_USER', 'ROLE_ADMIN'})")
+    @PreAuthorize("hasAnyRole({'USER', 'ADMIN'})")
     @GetMapping("/me")
     public ResponseEntity<UserDto> me() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -37,26 +37,26 @@ public class UserRestController {
         return new ResponseEntity<>(userFacade.findOneUser(userId), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<UserDto>> findAllUsers() {
         return new ResponseEntity<>(userFacade.findAllUsers(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<UserDto> saveUser(@Valid @RequestBody UserDto userDto) {
         return new ResponseEntity<>(userFacade.saveUser(userDto), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping
     public ResponseEntity<String> removeUser(@RequestParam("id") Long userId) {
         userFacade.removeUser(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole({'ROLE_USER', 'ROLE_ADMIN'})")
+    @PreAuthorize("hasAnyRole({'USER', 'ADMIN'})")
     @GetMapping("/roles")
     public ResponseEntity<Set<RoleDto>> findAllRoles(@RequestParam(value = "userId", required = false) Long userId) {
         return new ResponseEntity<>(userId == null ? userFacade.findAllRoles() : userFacade.findAllRoles(userId), HttpStatus.OK);

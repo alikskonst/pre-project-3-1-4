@@ -19,7 +19,7 @@ public class UserWebController {
 
     //------------------------------------------------------------------------------------------------------------------
 
-    @PreAuthorize("hasRole = 'ROLE_ADMIN'")
+    @PreAuthorize("hasRole = 'ADMIN'")
     @GetMapping("/admin")
     public String admin(ModelMap modelMap) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -27,7 +27,7 @@ public class UserWebController {
         return "admin";
     }
 
-    @PreAuthorize("hasAnyRole = {'ROLE_USER', 'ROLE_ADMIN'}")
+    @PreAuthorize("hasAnyRole = {'USER', 'ADMIN'}")
     @GetMapping("/user")
     public String user(ModelMap modelMap) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

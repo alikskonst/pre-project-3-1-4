@@ -35,6 +35,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isExistByLogin(String login) {
+        return userRepository.existsByLogin(login);
+    }
+
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
