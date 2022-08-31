@@ -2,8 +2,8 @@ package edu.kata.task314.config;
 
 import edu.kata.task314.entity.Role;
 import edu.kata.task314.entity.User;
-import edu.kata.task314.repository.RoleRepository;
-import edu.kata.task314.repository.UserRepository;
+import edu.kata.task314.service.RoleService;
+import edu.kata.task314.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,14 +11,13 @@ import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Configuration
 public class DbInitConfig {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final UserService userService;
+    private final RoleService roleService;
 
     //------------------------------------------------------------------------------------------------------------------
 
@@ -26,39 +25,31 @@ public class DbInitConfig {
     private void createUsers() {
 
         Role roleAdmin = getRole("admin");
-        if (!roleRepository.existsByName(roleAdmin.getName())) {
-            roleRepository.save(roleAdmin);
+        if (!roleService.isExistByName(roleAdmin.getName())) {
+            roleService.save(roleAdmin);
         }
 
         Role roleUser = getRole("user");
-        if (!roleRepository.existsByName(roleUser.getName())) {
-            roleRepository.save(roleUser);
+        if (!roleService.isExistByName(roleUser.getName())) {
+            roleService.save(roleUser);
         }
 
-        User userAdmin = getUser("admin", "$2a$10$nKBrTHS7jICOPqCq22Uc9u7AOUtaP7dM4S8BmlfNrvHvmXdd9L3LO");
-        if (!userRepository.existsByLogin(userAdmin.getLogin())) {
-            userAdmin = userRepository.save(userAdmin);
+        User userAdmin = getUser("admin");
+        if (!userService.isExistByLogin(userAdmin.getLogin())) {
+            userAdmin = userService.save(userAdmin);
         }
-        Optional<User> userAdminOptional = userRepository.findByLogin(userAdmin.getLogin());
-        if (userAdminOptional.isPresent()) {
-            userAdmin = userAdminOptional.get();
-            if (userAdmin.getRoles().isEmpty()) {
-                userAdmin.setRoles(new HashSet<>(Arrays.asList(roleAdmin, roleUser)));
-                userRepository.save(userAdmin);
-            }
+        if (userService.findOne(userAdmin.getLogin()).getRoles().isEmpty()) {
+            userAdmin.setRoles(new HashSet<>(Arrays.asList(roleAdmin, roleUser)));
+            userService.save(userAdmin);
         }
 
-        User userUser = getUser("user", "$2a$10$7yJM9vrlytBzARxGjc5daOwAlEdSPHa4fJmEUVsGhWExw5QdAJQ2i");
-        if (!userRepository.existsByLogin(userUser.getLogin())) {
-            userUser = userRepository.save(userUser);
+        User userUser = getUser("user");
+        if (!userService.isExistByLogin(userUser.getLogin())) {
+            userUser = userService.save(userUser);
         }
-        Optional<User> userUserOptional = userRepository.findByLogin(userUser.getLogin());
-        if (userUserOptional.isPresent()) {
-            userUser = userUserOptional.get();
-            if (userUser.getRoles().isEmpty()) {
-                userUser.setRoles(new HashSet<>(Collections.singletonList(roleUser)));
-                userRepository.save(userUser);
-            }
+        if (userService.findOne(userUser.getLogin()).getRoles().isEmpty()) {
+            userUser.setRoles(new HashSet<>(Collections.singletonList(roleUser)));
+            userService.save(userUser);
         }
     }
 
@@ -68,10 +59,10 @@ public class DbInitConfig {
         return role;
     }
 
-    private User getUser(String name, String password) {
+    private User getUser(String name) {
         User user = new User();
         user.setLogin(name + "@localhost");
-        user.setPassword(password);
+        user.setPassword(name);
         user.setName(name);
         user.setLastName(name + " last_name");
         user.setMiddleName(name + " middle_name");

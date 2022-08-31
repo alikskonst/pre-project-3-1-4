@@ -3,7 +3,6 @@ package edu.kata.task314.service.impl;
 import edu.kata.task314.entity.User;
 import edu.kata.task314.repository.UserRepository;
 import edu.kata.task314.service.UserService;
-import edu.kata.task314.util.StringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -46,12 +45,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User entity) {
-        User savedUser = entity.getId() == null ? new User() : findOne(entity.getId());
-        entity.setPassword(
-                StringUtils.isNotEmpty(entity.getPassword()) ?
-                        passwordEncoder.encode(entity.getPassword()) :
-                        savedUser.getPassword()
-        );
+        if (entity.getId() == null) {
+            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        }
         entity.setAccountNonExpired(true);
         entity.setAccountNonLocked(true);
         entity.setCredentialsNonExpired(true);
