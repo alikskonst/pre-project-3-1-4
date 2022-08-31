@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}"/>
+    <title>Admin page</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:action="@{/logout}">
+    <div class="container-fluid">
+        <a class="navbar-brand"><span th:text="${me.login}"></span> with roles: <span th:text="${me.roleList()}"></span></a>
+        <form class="form-inline" th:action="@{/logout}">
+            <button class="btn btn-dark ml-auto" type="submit">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<br/>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="d-flex align-items-start">
+            <div class="col-3">
+                <div aria-orientation="vertical" class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist">
+                    <a aria-controls="v-pills-home" aria-selected="true" class="nav-link active"
+                       data-bs-target="#v-pills-home" data-bs-toggle="pill" id="v-pills-home-tab" role="tab"
+                       type="button">Admin</a>
+                    <a aria-controls="v-pills-profile" aria-selected="false" class="nav-link"
+                       data-bs-target="#v-pills-profile" data-bs-toggle="pill" id="v-pills-profile-tab" role="tab"
+                       type="button">User</a>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div aria-labelledby="v-pills-home-tab" class="tab-pane fade show active" id="v-pills-home"
+                         role="tabpanel">
+                        <h1>Admin panel</h1>
+                        <ul class="nav nav-tabs" id="tabHeader" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button aria-controls="home" aria-selected="true" class="nav-link active"
+                                        data-bs-target="#userTable" data-bs-toggle="tab" id="home-tab" role="tab"
+                                        type="button">User table
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button aria-controls="profile" aria-selected="false" class="nav-link"
+                                        data-bs-target="#newUser" data-bs-toggle="tab" id="profile-tab" role="tab"
+                                        type="button">New user
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="tabContent">
+                            <div aria-labelledby="home-tab" class="tab-pane fade show active" id="userTable"
+                                 role="tabpanel">
+                                <table class="table table-striped" id="usersTable" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Login</th>
+                                        <th>Name</th>
+                                        <th>Last name</th>
+                                        <th>Middle name</th>
+                                        <th>Roles</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div aria-labelledby="profile-tab" class="tab-pane fade" id="newUser" role="tabpanel">
+                                <br/>
+                                <form data-hidden=true id="addUserForm">
+                                    <div class="form-group col-4 mx-auto text-center">
+                                        <label for="userLogin">Login</label>
+                                        <input class="form-control" id="userLogin" name="login" type="text">
+                                    </div>
+                                    <br/>
+                                    <div class="form-group col-4 mx-auto text-center">
+                                        <label for="userPassword">Password</label>
+                                        <input class="form-control" id="userPassword" name="password" type="password">
+                                    </div>
+                                    <br/>
+                                    <div class="form-group col-4 mx-auto text-center">
+                                        <label for="userName">Name</label>
+                                        <input class="form-control" id="userName" name="name" type="text">
+                                    </div>
+                                    <br/>
+                                    <div class="form-group col-4 mx-auto text-center">
+                                        <label for="userLastName">Last name</label>
+                                        <input class="form-control" id="userLastName" name="lastName" type="text">
+                                    </div>
+                                    <br/>
+                                    <div class="form-group col-4 mx-auto text-center">
+                                        <label for="userMiddleName">Middle name</label>
+                                        <input class="form-control" id="userMiddleName" name="middleName" type="text">
+                                    </div>
+                                    <br/>
+                                    <div class="form-group col-4 mx-auto text-center">
+                                        <label for="userRoles">Role/s</label>
+                                        <select class="form-select w-100" id="userRoles" multiple name="rolesSelected">
+                                        </select>
+                                    </div>
+                                    <div class="text-center">
+                                        <button class="btn btn-success mt-3" id="addUserButton" type="button">
+                                            Add new user
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-labelledby="v-pills-profile-tab" class="tab-pane fade" id="v-pills-profile"
+                         role="tabpanel">
+                        <h1>About you</h1>
+                        <table class="table table-striped" id="aboutMeTable">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Login</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Last name</th>
+                                <th scope="col">Middle name</th>
+                                <th scope="col">Roles</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div aria-hidden="true" aria-labelledby="modalFrameLabel" class="modal fade" id="modalFrame" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalFrameTitle">Manage user</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}" type="application/javascript"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}" type="application/javascript"></script>
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}" type="application/javascript"></script>
+<script src="/js/app.js" type="application/javascript"></script>
+</body>
+</html>

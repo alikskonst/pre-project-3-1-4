@@ -1,69 +1,57 @@
 package edu.kata.task314.service.impl;
 
-import edu.kata.task314.converter.UserConverter;
-import edu.kata.task314.dto.UserDto;
-import edu.kata.task314.dto.UserRegisterDto;
 import edu.kata.task314.entity.User;
 import edu.kata.task314.repository.UserRepository;
 import edu.kata.task314.service.UserService;
+import edu.kata.task314.util.StringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
-@Service
-@Transactional
+@Component
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserConverter userConverter;
     private final PasswordEncoder passwordEncoder;
 
     //------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public UserDto findOne(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
+    public User findOne(Long id) {
+        return userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("User not found by id: " + id)
         );
-        return userConverter.convert(user);
     }
 
     @Override
-    public UserDto findOne(String login) {
-        User user = userRepository.findOneByLogin(login).orElseThrow(
+    public User findOne(String login) {
+        return userRepository.findByLogin(login).orElseThrow(
                 () -> new EntityNotFoundException("User not found by login: " + login)
         );
-        return userConverter.convert(user);
     }
 
     @Override
-    public List<UserDto> findAll() {
-        List<User> userList = userRepository.findAll();
-        return userList.isEmpty() ?
-                Collections.emptyList() :
-                userList.stream().map(userConverter::convert).collect(Collectors.toList());
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     @Override
-    public UserDto save(UserDto userDto) {
-        return userConverter.convert(userRepository.save(userConverter.convert(userDto)));
-    }
-
-    @Override
-    public UserDto save(UserRegisterDto userRegisterDto) {
-        if (!userRegisterDto.getPassword().equalsIgnoreCase(userRegisterDto.getPasswordConfirm())) {
-            throw new RuntimeException("чото там про валидацию паролей");
-        }
-        User user = userConverter.convert(userRegisterDto);
-        user.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
-        return userConverter.convert(userRepository.save(user));
+    public User save(User entity) {
+        User savedUser = entity.getId() == null ? new User() : findOne(entity.getId());
+        entity.setPassword(
+                StringUtils.isNotEmpty(entity.getPassword()) ?
+                        passwordEncoder.encode(entity.getPassword()) :
+                        savedUser.getPassword()
+        );
+        entity.setAccountNonExpired(true);
+        entity.setAccountNonLocked(true);
+        entity.setCredentialsNonExpired(true);
+        entity.setEnabled(true);
+        return userRepository.save(entity);
     }
 
     @Override

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}"/>
+    <title>User page</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:action="@{/logout}">
+    <div class="container-fluid">
+        <a class="navbar-brand"><span th:text="${me.login}"></span> with roles: <span th:text="${me.roleList()}"></span></a>
+        <form class="form-inline" th:action="@{/logout}">
+            <button class="btn btn-dark ml-auto" type="submit">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<br/>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-3">
+            <div aria-orientation="vertical" class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                <a aria-controls="me" aria-selected="false" class="nav-link active" data-toggle="pill" href="#me"
+                   id="me-tab" role="tab">User</a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div aria-labelledby="me-tab" class="tab-pane fade show active" id="me" role="tabpanel">
+                    <h1>About you</h1>
+                    <table class="table table-striped" id="aboutMeTable">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Login</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Last name</th>
+                            <th scope="col">Middle name</th>
+                            <th scope="col">Roles</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}" type="application/javascript"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}" type="application/javascript"></script>
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}" type="application/javascript"></script>
+<script src="/js/app.js" type="application/javascript"></script>
+</body>
+</html>

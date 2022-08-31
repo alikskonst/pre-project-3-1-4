@@ -1,4 +1,4 @@
-//package com.example.preproject314;
+//package edu.kata.task314;
 //
 //import org.junit.jupiter.api.Test;
 //import org.springframework.boot.test.context.SpringBootTest;

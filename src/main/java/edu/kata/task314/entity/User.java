@@ -10,20 +10,23 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
+@Getter
 @Setter
 @Entity
 @Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "login")})
 public class User extends NameEntity implements UserDetails {
 
-    @Getter
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Getter
+    @Column(name = "login")
     private String login;
 
     @Column(name = "password_hash")
     private String password;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "middle_name")
+    private String middleName;
 
     @Column(name = "non_expired")
     private boolean accountNonExpired;
@@ -36,23 +39,18 @@ public class User extends NameEntity implements UserDetails {
 
     private boolean enabled;
 
-    //------------------------------------------------------------------------------------------------------------------
-
-    @Getter
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"),
             foreignKey = @ForeignKey(name = "fk_user_to_role")
     )
-    private Set<Role> roleSet;
-
-    //------------------------------------------------------------------------------------------------------------------
+    private Set<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roleSet;
+        return roles;
     }
 
     @Override
@@ -84,4 +82,20 @@ public class User extends NameEntity implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (this == obj) return true;
+//        if (obj == null || getClass() != obj.getClass()) return false;
+//        User user = (User) obj;
+//        return Objects.equals(getId(), user.getId())
+//                && login.equals(user.login)
+//                && getName().equals(user.getName())
+//                && lastName.equals(user.lastName)
+//                && middleName.equals(user.middleName);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(getId(), login, getName(), lastName, middleName);
+//    }
 }

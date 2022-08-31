@@ -1,12 +1,10 @@
 package edu.kata.task314.service;
 
-import edu.kata.task314.dto.RoleDto;
+import edu.kata.task314.entity.Role;
 
-import java.util.Set;
+import java.util.List;
 
-public interface RoleService {
+public interface RoleService extends CommonService<Role> {
 
-    RoleDto findOne(Long id);
-
-    Set<RoleDto> findAll();
+    List<Role> findAll(Long userId);
 }

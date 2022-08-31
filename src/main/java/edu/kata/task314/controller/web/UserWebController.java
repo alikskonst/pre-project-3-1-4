@@ -1,12 +1,37 @@
 package edu.kata.task314.controller.web;
 
+import edu.kata.task314.entity.User;
+import edu.kata.task314.facade.UserFacade;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-public interface UserWebController {
+@AllArgsConstructor
+@Controller
+@RequestMapping
+public class UserWebController {
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @GetMapping
-    String userPage(ModelMap modelMap);
+    private final UserFacade userFacade;
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    @PreAuthorize("hasRole = 'ROLE_ADMIN'")
+    @GetMapping("/admin")
+    public String admin(ModelMap modelMap) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        modelMap.addAttribute("me", userFacade.findOneUser(user.getLogin()));
+        return "admin";
+    }
+
+    @PreAuthorize("hasAnyRole = {'ROLE_USER', 'ROLE_ADMIN'}")
+    @GetMapping("/user")
+    public String user(ModelMap modelMap) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        modelMap.addAttribute("me", userFacade.findOneUser(user.getLogin()));
+        return "user";
+    }
 }

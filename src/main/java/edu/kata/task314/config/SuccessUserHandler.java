@@ -1,4 +1,4 @@
-package edu.kata.task314.configuration;
+package edu.kata.task314.config;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -12,13 +12,14 @@ import java.io.IOException;
 @Component
 public class SuccessUserHandler implements AuthenticationSuccessHandler {
 
-    // Spring Security использует объект Authentication, пользователя авторизованной сессии.
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
+    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
+                                        HttpServletResponse httpServletResponse,
+                                        Authentication authentication) throws IOException {
         httpServletResponse.sendRedirect(
-                AuthorityUtils.authorityListToSet(authentication.getAuthorities()).contains("ROLE_ADMIN") ?
+                AuthorityUtils.authorityListToSet(authentication.getAuthorities()).contains("ADMIN") ?
                         "/admin" :
-                        AuthorityUtils.authorityListToSet(authentication.getAuthorities()).contains("ROLE_USER") ?
+                        AuthorityUtils.authorityListToSet(authentication.getAuthorities()).contains("USER") ?
                                 "/user" :
                                 "/login"
         );
